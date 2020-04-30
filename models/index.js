@@ -1,13 +1,11 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://localhost:5432/wikistack');
+const db = new Sequelize('postgres://localhost:5432/wikistack', { logging: false });
 
 const Page = db.define('page', {
     title: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-            unique: true
-        }
+        unique: true
     },
     slug: {
         type: Sequelize.STRING,
@@ -18,17 +16,23 @@ const Page = db.define('page', {
         allowNull: false
     },
     status: {
-        type: Sequelize.ENUM('open', 'closed'),
+        type: Sequelize.ENUM('open', 'closed')
     }
+});
+
+const generateSlug = (title) => {
+    return title.replace(/\s+/g, '_').replace(/\W/g, '');
+};
+
+Page.beforeValidate((pageInstance, optionalArg) => {
+    pageInstance.slug = generateSlug(pageInstance.title);
 });
 
 const User = db.define('user', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-            unique: true
-        }
+        unique: true
     },
     email: {
         type: Sequelize.STRING,

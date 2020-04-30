@@ -38,8 +38,3 @@ init();
 
 // Reset tables in database using JS-defined model
 // models.db.sync({force: true})
-
-// Turn off SQL command logging
-// const db = new Sequelize('postgres://localhost:5432/wikistack', {
-//     logging: false
-// });
