@@ -9,14 +9,15 @@ const Page = db.define('page', {
     },
     slug: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     contents: {
         type: Sequelize.TEXT,
         allowNull: false
     },
     status: {
-        type: Sequelize.ENUM('open', 'closed')
+        type: Sequelize.ENUM('open', 'closed'),
     }
 });
 
@@ -43,6 +44,7 @@ const User = db.define('user', {
     }
 });
 
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
     db,
